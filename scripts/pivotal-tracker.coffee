@@ -28,7 +28,7 @@ module.exports = (robot) ->
 
   # Match either a URL or a 8-digit number. When there is a URL, capture group 1 will be empty
   # and thus fail the isNaN test. In other words: a poor man's negative look-behind.
-  robot.hear /http:\/\/www.pivotaltracker\.com\/story\/show|\b(\d{8})\b/, (msg) ->
+  robot.hear /http:\/\/www.pivotaltracker\.com\/story\/show|^hubot|\b(\d{8})\b/, (msg) ->
     story_number = msg.match[1]
     return if isNaN story_number
 
