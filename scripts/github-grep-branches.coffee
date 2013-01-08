@@ -19,7 +19,7 @@
 #   Arjan van der Gaag
 module.exports = (robot) ->
   github = require('githubot')(robot)
-  robot.respond /(?:find|search|grep) branch(?:es)? (.+)/i, (msg) ->
+  robot.respond /(?:list|find|search|grep) (?:features?|branche?s?) (.+)/i, (msg) ->
     regex = new RegExp msg.match[1], 'i'
 
     repo_reporter = (repo) ->
