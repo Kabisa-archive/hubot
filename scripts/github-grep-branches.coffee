@@ -6,7 +6,7 @@
 #   "githubot": "0.2.0"
 #
 # Configuration:
-#   HUBOT_GITHUB_REPO
+#   HUBOT_GITHUB_REPOS
 #   HUBOT_GITHUB_TOKEN
 #
 # Commands:
@@ -19,14 +19,18 @@
 #   Arjan van der Gaag
 module.exports = (robot) ->
   github = require('githubot')(robot)
-  robot.respond /(?:find|search|grep) branch(?:es)? (.+)/i, (msg) ->
+  robot.respond /(?:list|find|search|grep) (?:features?|branche?s?) (.+)/i, (msg) ->
     regex = new RegExp msg.match[1], 'i'
-    bot_github_repo = github.qualified_repo process.env.HUBOT_GITHUB_REPO
-    github.get "https://api.github.com/repos/#{bot_github_repo}/branches", (branches) ->
-      branches = (branch.name for branch in branches when regex.test branch.name)
-      if branches.length is 0
-        msg.reply "Sorry dude, nothing found."
-      else if branches.length is 1
-        msg.reply "This is it: " + branches[0]
-      else
-        msg.reply "I found these branches:\n" + branches.join("\n")
+
+    repo_reporter = (repo) ->
+      (repo_branches) ->
+        branches = (branch.name for branch in repo_branches when regex.test branch.name)
+        if branches.length is 0
+          msg.reply "No matching branches found in #{repo}"
+        else if branches.length is 1
+          msg.reply "Found in #{repo}: " + branches[0]
+        else
+          msg.reply "Found #{branches.length} in #{repo}:\n" + branches.join("\n")
+
+    for repo in process.env.HUBOT_GITHUB_REPOS.split ','
+      github.get "https://api.github.com/repos/#{github.qualified_repo repo}/branches", repo_reporter(repo)
