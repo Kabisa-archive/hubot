@@ -77,7 +77,7 @@ Available commands:
         msg.reply err.error
       else
         msg.reply "I've found these releases"
-        msg.paste ("#{r.name}: #{r.descr} (#{r.created_at})\n" for r in releases).join
+        msg.send ("#{r.name}: #{r.descr} (#{r.created_at})\n" for r in releases).slice(0,20).join()
 
   robot.respond /show workers for ([\w\-]+)/i, (msg) ->
     app = repo.get msg.match[1]
@@ -86,4 +86,4 @@ Available commands:
         msg.reply err.error
       else
         msg.reply "I've found these processes:"
-        msg.paste ("#{p.process}: #{p.state}\n" for p in processes).join
+        msg.send ("#{p.process}: #{p.state}\n" for p in processes).join()
