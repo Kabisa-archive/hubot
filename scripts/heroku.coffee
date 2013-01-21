@@ -11,6 +11,7 @@
 #   HUBOT_HEROKU_DEFAULT_WORKER_QUANTITY_OFF
 #
 # Commands:
+#   hubot help heroku - explain how to work with Heroku
 #   hubot backup foo - return link to dump of latest backup of app foo
 #   hubot hire workers for foo - add a pre-set number of workers to app foo
 #   hubot fire workers for foo - reduce workers to a pre-set level for app foo
@@ -40,6 +41,16 @@ module.exports = (robot) ->
   default_worker_type         = process.env.HUBOT_HEROKU_DEFAULT_WORKER_TYPE
   default_worker_quantity_on  = process.env.HUBOT_HEROKU_DEFAULT_WORKER_QUANTITY_ON
   default_worker_quantity_off = process.env.HUBOT_HEROKU_DEFAULT_WORKER_QUANTITY_OFF
+
+  robot.respond /help heroku/i, (msg) ->
+    msg.reply """
+Available commands:
+* backup my_app
+* show workers for my_app
+* show releases for my_app
+* hire workers for my_app
+* fire workers for my_app
+"""
 
   robot.respond /backup (\w+)/i, (msg) ->
     app = repo[msg.match[1]]
