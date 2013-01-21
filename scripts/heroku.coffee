@@ -52,26 +52,26 @@ Available commands:
 * fire workers for my_app
 """
 
-  robot.respond /backup (\w+)/i, (msg) ->
-    app = repo[msg.match[1]]
+  robot.respond /backup ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[1]
     app.latestBackup (err, backup) ->
       if err
         msg.reply err.error
       else
         msg.reply "Here's an auto-expiring link to the latest backup #{msg.match[1]}: #{backup.public_url}"
 
-  robot.respond /hire workers for (\w+)/i, (msg) ->
-    app = repo[msg.match[1]]
+  robot.respond /hire workers for ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[1]
     app.scale default_worker_type, default_worker_quantity_on, ->
       msg.reply "I've hired #{default_worker_quantity_on} unskilled workers on temporary contracts."
 
-  robot.respond /fire workers for (\w+)/i, (msg) ->
-    app = repo[msg.match[1]]
+  robot.respond /fire workers for ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[1]
     app.scale default_worker_type, default_worker_quantity_off, ->
       msg.reply "I've fired all temporary workers."
 
-  robot.respond /show releases (?:of|for) (\w+)/i, (msg) ->
-    app = repo[msg.match[1]]
+  robot.respond /show releases (?:of|for) ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[1]
     app.releases (err, releases) ->
       if err
         msg.reply err.error
@@ -79,8 +79,8 @@ Available commands:
         msg.reply "I've found these releases"
         msg.paste ("#{r.name}: #{r.descr} (#{r.created_at})\n" for r in releases).join
 
-  robot.respond /show workers for (\w+)/i, (msg) ->
-    app = repo[msg.match[1]]
+  robot.respond /show workers for ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[1]
     app.ps (err, processes) ->
       if err
         msg.reply err.error
