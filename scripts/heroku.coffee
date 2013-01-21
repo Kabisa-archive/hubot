@@ -24,7 +24,7 @@
 # Author:
 #   Arjan van der Gaag
 module.exports = (robot) ->
-  Heroku = require 'heroku'
+  Heroku = require 'heroku-api'
 
   class HerokuRepo
     constructor: (@api_token) ->
