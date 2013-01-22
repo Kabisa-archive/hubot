@@ -87,3 +87,26 @@ Available commands:
       else
         msg.reply "I've found these processes:"
         msg.send ("#{p.process}: #{p.state}\n" for p in processes).join()
+
+  robot.respond /portalize customer (\d+) on ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[2]
+    id  = msg.match[1]
+    if msg.match[2] is 'portal-production'
+      msg.reply "Let's not do this on production, dude."
+    else
+      app.run "rake portal:customers:portalize[#{id}]", (err, response) ->
+        if err
+          msg.reply err.error
+        else
+          msg.reply "Customer #{id} on #{msg.match[1]} is now from 'portal'"
+
+  robot.respond /portalize customers on ([\w\-]+)/i, (msg) ->
+    app = repo.get msg.match[1]
+    if msg.match[1] is 'portal-production'
+      msg.reply "Let's not do this on production, dude."
+    else
+      app.run 'rake portal:customers:portalize', (err, response) ->
+        if err
+          msg.reply err.error
+        else
+          msg.reply "All customers on #{msg.match[1]} are now from 'portal'"
