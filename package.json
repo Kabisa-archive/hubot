@@ -9,7 +9,7 @@
     "hubot": "2.4.5",
     "hubot-scripts": ">=2.0.8",
     "optparse": "1.0.3",
-    "githubot": ">=0.2.0",
+    "githubot": ">=0.4.0",
     "heroku-api": "0.1.2",
     "pivotal": ">= 0.1.3",
     "cleverbot-node": "0.1.1"
